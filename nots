@@ -1,0 +1,43 @@
+<script>
+    fetch('notebooks.json')
+        .then(response => response.json())
+        .then(data => {
+            const labels = data.notebooks.map(notebook => `${notebook.name} (${notebook.usage}%)`);
+            const usageData = data.notebooks.map(notebook => notebook.usage);
+
+            const ctx = document.getElementById('notebookChart').getContext('2d');
+            const notebookChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: usageData,
+                        backgroundColor: [
+                            '#ff6384',
+                            '#36a2eb',
+                            '#ffce56',
+                            '#4bc0c0',
+                            '#9966ff',
+                            '#ff9f40',
+                            '#ff6384',
+                            '#36a2eb',
+                            '#ffce56'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Distribuição de Uso de Notebooks'
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Erro ao carregar o JSON:', error));
+</script>
